@@ -1,546 +1,557 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Brain Tumor Prediction System</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Tumor Prediction System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-      color: #e2e8f0;
-    }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            color: #e2e8f0;
+        }
 
-    .container {
-      width: 100%;
-      max-width: 1200px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
 
-    .header {
-      text-align: center;
-      animation: slideDown 0.6s ease-out;
-    }
+        .header {
+            text-align: center;
+            animation: slideDown 0.6s ease-out;
+        }
 
-    .header h1 {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-    .header p {
-      color: #cbd5e1;
-      font-size: 14px;
-      line-height: 1.5;
-    }
+        .header p {
+            color: #cbd5e1;
+            font-size: 14px;
+            line-height: 1.5;
+        }
 
-    /* Added grid layout for side-by-side upload and results */
-    .content-wrapper {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      animation: slideUp 0.6s ease-out;
-    }
+        /* Added grid layout for side-by-side upload and results */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            animation: slideUp 0.6s ease-out;
+        }
 
-    .card {
-      background: rgba(15, 23, 42, 0.8);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(100, 165, 255, 0.2);
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-      display: flex;
-      flex-direction: column;
-    }
+        .card {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(100, 165, 255, 0.2);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
 
-    .upload-section {
-      margin-bottom: 16px;
-    }
+        .upload-section {
+            margin-bottom: 16px;
+        }
 
-    .upload-label {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 10px;
-      color: #cbd5e1;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+        .upload-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #cbd5e1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-    .upload-box {
-      position: relative;
-      border: 2px dashed rgba(100, 165, 255, 0.4);
-      border-radius: 12px;
-      padding: 20px 12px;
-      text-align: center;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      background: rgba(59, 130, 246, 0.05);
-    }
+        .upload-box {
+            position: relative;
+            border: 2px dashed rgba(100, 165, 255, 0.4);
+            border-radius: 12px;
+            padding: 20px 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: rgba(59, 130, 246, 0.05);
+        }
 
-    .upload-box:hover {
-      border-color: rgba(100, 165, 255, 0.7);
-      background: rgba(59, 130, 246, 0.1);
-    }
+        .upload-box:hover {
+            border-color: rgba(100, 165, 255, 0.7);
+            background: rgba(59, 130, 246, 0.1);
+        }
 
-    .upload-box input[type="file"] {
-      position: absolute;
-      opacity: 0;
-      width: 100%;
-      height: 100%;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-    }
+        .upload-box input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+        }
 
-    .upload-content {
-      pointer-events: none;
-    }
+        .upload-content {
+            pointer-events: none;
+        }
 
-    .upload-icon {
-      font-size: 28px;
-      margin-bottom: 8px;
-    }
+        .upload-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
 
-    .upload-text {
-      color: #94a3b8;
-      font-size: 13px;
-      margin-bottom: 2px;
-    }
+        .upload-text {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
 
-    .upload-hint {
-      color: #64748b;
-      font-size: 11px;
-    }
+        .upload-hint {
+            color: #64748b;
+            font-size: 11px;
+        }
 
-    .preview-section {
-      display: none;
-      margin-bottom: 12px;
-      max-height: 400px;
-      overflow: hidden;
-    }
+        .preview-section {
+            display: none;
+            margin-bottom: 12px;
+            max-height: 400px;
+            overflow: hidden;
+        }
 
-    .preview-section.active {
-      display: block;
-      animation: fadeIn 0.3s ease-out;
-    }
+        .preview-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
 
-    .preview-label {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #cbd5e1;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+        .preview-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-    /* Changed image preview to show full image without cutting */
-    #preview {
-      width: 100%;
-      height: auto;
-      max-height: 350px;
-      object-fit: contain;
-      border-radius: 12px;
-      border: 1px solid rgba(100, 165, 255, 0.3);
-      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
-      display: block;
-    }
+        /* Changed image preview to show full image without cutting */
+        #preview {
+            width: 100%;
+            height: auto;
+            max-height: 350px;
+            object-fit: contain;
+            border-radius: 12px;
+            border: 1px solid rgba(100, 165, 255, 0.3);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+            display: block;
+        }
 
-    .button-group {
-      display: flex;
-      gap: 8px;
-      margin-top: auto;
-    }
+        .button-group {
+            display: flex;
+            gap: 8px;
+            margin-top: auto;
+        }
 
-    .btn {
-      flex: 1;
-      padding: 10px 14px;
-      border: none;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+        .btn {
+            flex: 1;
+            padding: 10px 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-    .btn-primary {
-      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-      color: white;
-      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
-    }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
 
-    .btn-primary:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 28px rgba(59, 130, 246, 0.4);
-    }
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(59, 130, 246, 0.4);
+        }
 
-    .btn-primary:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
 
-    .btn-secondary {
-      background: rgba(75, 85, 99, 0.5);
-      color: #cbd5e1;
-      border: 1px solid rgba(100, 165, 255, 0.3);
-    }
+        .btn-secondary {
+            background: rgba(75, 85, 99, 0.5);
+            color: #cbd5e1;
+            border: 1px solid rgba(100, 165, 255, 0.3);
+        }
 
-    .btn-secondary:hover {
-      background: rgba(75, 85, 99, 0.7);
-      border-color: rgba(100, 165, 255, 0.5);
-    }
+        .btn-secondary:hover {
+            background: rgba(75, 85, 99, 0.7);
+            border-color: rgba(100, 165, 255, 0.5);
+        }
 
-    /* Results panel on the right side */
-    .results-panel {
-      background: rgba(15, 23, 42, 0.8);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(100, 165, 255, 0.2);
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 300px;
-    }
+        /* Results panel on the right side */
+        .results-panel {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(100, 165, 255, 0.2);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+        }
 
-    .result-section {
-      width: 100%;
-      padding: 20px;
-      background: rgba(59, 130, 246, 0.1);
-      border: 1px solid rgba(100, 165, 255, 0.3);
-      border-radius: 14px;
-      display: none;
-      animation: slideIn 0.4s ease-out;
-      text-align: center;
-    }
+        .result-section {
+            width: 100%;
+            padding: 20px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(100, 165, 255, 0.3);
+            border-radius: 14px;
+            display: none;
+            animation: slideIn 0.4s ease-out;
+            text-align: center;
+        }
 
-    .result-section.active {
-      display: block;
-    }
+        .result-section.active {
+            display: block;
+        }
 
-    .result-section.success {
-      background: rgba(34, 197, 94, 0.1);
-      border-color: rgba(34, 197, 94, 0.3);
-    }
+        .result-section.success {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.3);
+        }
 
-    .result-section.error {
-      background: rgba(239, 68, 68, 0.1);
-      border-color: rgba(239, 68, 68, 0.3);
-    }
+        .result-section.error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
 
-    .result-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: #94a3b8;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
-    }
+        .result-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
 
-    .result-value {
-      font-size: 20px;
-      font-weight: 700;
-      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 12px;
-    }
+        .result-value {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
 
-    .result-section.success .result-value {
-      background: linear-gradient(135deg, #22c55e 0%, #84cc16 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+        .result-section.success .result-value {
+            background: linear-gradient(135deg, #22c55e 0%, #84cc16 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-    .result-section.error .result-value {
-      background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+        .result-section.error .result-value {
+            background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-    .result-details {
-      font-size: 12px;
-      color: #cbd5e1;
-      line-height: 1.5;
-    }
+        .result-details {
+            font-size: 12px;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
 
-    .loading {
-      display: none;
-      text-align: center;
-    }
+        .loading {
+            display: none;
+            text-align: center;
+        }
 
-    .loading.active {
-      display: block;
-    }
+        .loading.active {
+            display: block;
+        }
 
-    .spinner {
-      display: inline-block;
-      width: 32px;
-      height: 32px;
-      border: 3px solid rgba(100, 165, 255, 0.3);
-      border-top-color: #3b82f6;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 12px;
-    }
+        .spinner {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border: 3px solid rgba(100, 165, 255, 0.3);
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 12px;
+        }
 
-    .loading-text {
-      color: #94a3b8;
-      font-size: 14px;
-    }
+        .loading-text {
+            color: #94a3b8;
+            font-size: 14px;
+        }
 
-    .placeholder-text {
-      color: #64748b;
-      font-size: 14px;
-      text-align: center;
-    }
+        .placeholder-text {
+            color: #64748b;
+            font-size: 14px;
+            text-align: center;
+        }
 
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
 
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
 
-    /* Mobile responsive - stack vertically on small screens */
-    @media (max-width: 768px) {
-      .header h1 {
-        font-size: 22px;
-      }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-      .header p {
-        font-size: 12px;
-      }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
 
-      .content-wrapper {
-        grid-template-columns: 1fr;
-      }
+            to {
+                opacity: 1;
+            }
+        }
 
-      .results-panel {
-        min-height: 200px;
-      }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
-      .result-value {
-        font-size: 18px;
-      }
+        /* Mobile responsive - stack vertically on small screens */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 22px;
+            }
 
-      .button-group {
-        gap: 6px;
-      }
+            .header p {
+                font-size: 12px;
+            }
 
-      .btn {
-        padding: 8px 12px;
-        font-size: 12px;
-      }
-    }
-  </style>
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .results-panel {
+                min-height: 200px;
+            }
+
+            .result-value {
+                font-size: 18px;
+            }
+
+            .button-group {
+                gap: 6px;
+            }
+
+            .btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-  <div class="container">
-    <div class="header">
-      <h1>🧠 Brain Tumor Detection</h1>
-      <p>Upload a medical scan image to analyze for potential brain tumors using advanced AI</p>
-    </div>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 Brain Tumor Detection</h1>
+            <p>Upload a medical scan image to analyze for potential brain tumors using advanced AI</p>
+        </div>
 
-    <!-- Split layout: upload on left, results on right -->
-    <div class="content-wrapper">
-      <div class="card">
-        <div class="upload-section">
-          <label class="upload-label">Upload Medical Image</label>
-          <div class="upload-box">
-            <input type="file" id="image" accept="image/*">
-            <div class="upload-content">
-              <div class="upload-icon">📋</div>
-              <div class="upload-text">Click to upload</div>
-              <div class="upload-hint">PNG, JPG, JPEG</div>
+        <!-- Split layout: upload on left, results on right -->
+        <div class="content-wrapper">
+            <div class="card">
+                <div class="upload-section">
+                    <label class="upload-label">Upload Medical Image</label>
+                    <div class="upload-box">
+                        <input type="file" id="image" accept="image/*">
+                        <div class="upload-content">
+                            <div class="upload-icon">📋</div>
+                            <div class="upload-text">Click to upload</div>
+                            <div class="upload-hint">PNG, JPG, JPEG</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="preview-section" id="previewSection">
+                    <label class="preview-label">Preview</label>
+                    <img id="preview" alt="Preview">
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" id="predictBtn" onclick="predict()" disabled>
+                        🔍 Analyze
+                    </button>
+                    <button class="btn btn-secondary" onclick="clearForm()">Clear</button>
+                </div>
             </div>
-          </div>
-        </div>
 
-        <div class="preview-section" id="previewSection">
-          <label class="preview-label">Preview</label>
-          <img id="preview" alt="Preview">
-        </div>
+            <div class="results-panel">
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <div class="loading-text">Analyzing...</div>
+                </div>
 
-        <div class="button-group">
-          <button class="btn btn-primary" id="predictBtn" onclick="predict()" disabled>
-            🔍 Analyze
-          </button>
-          <button class="btn btn-secondary" onclick="clearForm()">Clear</button>
-        </div>
-      </div>
+                <div class="result-section" id="result"></div>
 
-      <div class="results-panel">
-        <div class="loading" id="loading">
-          <div class="spinner"></div>
-          <div class="loading-text">Analyzing...</div>
+                <div class="placeholder-text" id="placeholder">
+                    Results will appear here
+                </div>
+            </div>
         </div>
-
-        <div class="result-section" id="result"></div>
-
-        <div class="placeholder-text" id="placeholder">
-          Results will appear here
-        </div>
-      </div>
     </div>
-  </div>
 
-  <script>
-    const imageInput = document.getElementById("image");
-    const previewImg = document.getElementById("preview");
-    const previewSection = document.getElementById("previewSection");
-    const predictBtn = document.getElementById("predictBtn");
-    const resultDiv = document.getElementById("result");
-    const loading = document.getElementById("loading");
-    const placeholder = document.getElementById("placeholder");
+    <script>
+        const imageInput = document.getElementById("image");
+        const previewImg = document.getElementById("preview");
+        const previewSection = document.getElementById("previewSection");
+        const predictBtn = document.getElementById("predictBtn");
+        const resultDiv = document.getElementById("result");
+        const loading = document.getElementById("loading");
+        const placeholder = document.getElementById("placeholder");
 
-    imageInput.addEventListener("change", function(e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          previewImg.src = reader.result;
-          previewSection.classList.add("active");
-          predictBtn.disabled = false;
-        };
-        reader.readAsDataURL(file);
-        resultDiv.classList.remove("active");
-      }
-    });
+        imageInput.addEventListener("change", function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    previewImg.src = reader.result;
+                    previewSection.classList.add("active");
+                    predictBtn.disabled = false;
+                };
+                reader.readAsDataURL(file);
+                resultDiv.classList.remove("active");
+            }
+        });
 
-    function predict() {
-      let file = document.getElementById("image").files[0];
-      if (!file) {
-        showError("Please select an image first!");
-        return;
-      }
+        function predict() {
+            let file = document.getElementById("image").files[0];
+            if (!file) {
+                showError("Please select an image first!");
+                return;
+            }
 
-      loading.classList.add("active");
-      placeholder.style.display = "none";
-      resultDiv.classList.remove("active");
+            loading.classList.add("active");
+            placeholder.style.display = "none";
+            resultDiv.classList.remove("active");
 
-      let formData = new FormData();
-      formData.append("file", file);
+            let formData = new FormData();
+            formData.append("file", file);
 
-      fetch("http://127.0.0.1:5000/predict", {
-        method: "POST",
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        loading.classList.remove("active");
-        showResult(data);
-      })
-      .catch(err => {
-        loading.classList.remove("active");
-        console.error(err);
-        showError("Prediction failed!");
-      });
-    }
+            //   fetch("http://127.0.0.1:5000/predict", {
+            //     method: "POST",
+            //     body: formData
+            //   })
+            fetch("https://brain-tumor-backend.onrender.com/predict", {
+                method: "POST",
+                body: formData
+            })
+                .then(res => res.json())
+                .then(data => {
+                    loading.classList.remove("active");
+                    showResult(data);
+                })
+                .catch(err => {
+                    loading.classList.remove("active");
+                    console.error(err);
+                    showError("Prediction failed!");
+                });
+        }
 
-    function showResult(data) {
-      const hasNegative = data.class_name?.toLowerCase().includes("no") || data.class_name?.toLowerCase().includes("negative");
-      
-      resultDiv.className = "result-section active " + (hasNegative ? "success" : "error");
-      /* Removed classification index from results display */
-      resultDiv.innerHTML = `
+        function showResult(data) {
+            const hasNegative = data.class_name?.toLowerCase().includes("no") || data.class_name?.toLowerCase().includes("negative");
+
+            resultDiv.className = "result-section active " + (hasNegative ? "success" : "error");
+            /* Removed classification index from results display */
+            resultDiv.innerHTML = `
         <div class="result-label">Analysis Result</div>
         <div class="result-value">${data.class_name}</div>
         <div class="result-details">
           Prediction Complete
         </div>
       `;
-    }
+        }
 
-    function showError(message) {
-      resultDiv.className = "result-section active error";
-      resultDiv.innerHTML = `
+        function showError(message) {
+            resultDiv.className = "result-section active error";
+            resultDiv.innerHTML = `
         <div class="result-label">Error</div>
         <div class="result-value" style="color: #ef4444;">⚠️</div>
         <div class="result-details">${message}</div>
       `;
-    }
+        }
 
-    function clearForm() {
-      imageInput.value = "";
-      previewImg.src = "";
-      previewSection.classList.remove("active");
-      resultDiv.classList.remove("active");
-      loading.classList.remove("active");
-      placeholder.style.display = "block";
-      predictBtn.disabled = true;
-    }
-  </script>
+        function clearForm() {
+            imageInput.value = "";
+            previewImg.src = "";
+            previewSection.classList.remove("active");
+            resultDiv.classList.remove("active");
+            loading.classList.remove("active");
+            placeholder.style.display = "block";
+            predictBtn.disabled = true;
+        }
+    </script>
 
 </body>
+
 </html>
