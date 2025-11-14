@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -511,6 +508,19 @@
       });
     }
 
+    function showResult(data) {
+      const hasNegative = data.class_name?.toLowerCase().includes("no") || data.class_name?.toLowerCase().includes("negative");
+      
+      resultDiv.className = "result-section active " + (hasNegative ? "success" : "error");
+      /* Removed classification index from results display */
+      resultDiv.innerHTML = `
+        <div class="result-label">Analysis Result</div>
+        <div class="result-value">${data.class_name}</div>
+        <div class="result-details">
+          Prediction Complete
+        </div>
+      `;
+    }
 
     function showError(message) {
       resultDiv.className = "result-section active error";
